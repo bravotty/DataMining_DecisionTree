@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Author : tyty
 # Date   : 2018-5-25
+# Env    : python2.6
 
 import numpy as np
 from math import log
@@ -14,7 +15,7 @@ class DecisionTree:
         self.falseBranch = falseBranch   #False branch in TreeNode
         self.results = results           #LeafNode results  - feature nums 
         self.col = col                   #Record the feature columns
-        self.summary = summary           #Every node's summary info
+        self.summary = summary           #Every Node's summary info
         self.data = data                 #LeafNode data
 
 def maxminScalar(dataSet):
@@ -79,7 +80,7 @@ def buildDecisionTree(rows, evaluationFunc = None):
     best_value = None
     best_set = None
 
-    #choos the best gain for the former 4 feature
+    #choose the best gain for the former 4 feature
     for col in range(len(rows[0]) - 1):
         col_value_set = set([x[col] for x in rows])
         #print col_value_set
@@ -92,22 +93,24 @@ def buildDecisionTree(rows, evaluationFunc = None):
                 best_gain = gain
                 best_value = (col, value)
                 best_set = (list1, list2)
-    dcY = {'impurity' : '%.3f' %currentGain, 'samples':'%d' % rows_length}
+    dcY = {'impurity' : '%.4f' %currentGain, 'samples': '%d' % rows_length}
 
     #stop or not stop
     if best_gain > 0:
         trueBranch = buildDecisionTree(best_set[0], evaluationFunc)
         falseBranch = buildDecisionTree(best_set[1], evaluationFunc)
-        return DecisionTree(col=best_value[0], value=best_value[1], trueBranch=trueBranch, falseBranch=falseBranch, summary=dcY)
+        return DecisionTree(col=best_value[0], value=best_value[1], \
+         trueBranch=trueBranch, falseBranch=falseBranch, summary=dcY)
     else:
-        return DecisionTree(results=calculateDiffCount(rows), summary=dcY, data=rows)
+        return DecisionTree(results=calculateDiffCount(rows), \
+            summary=dcY, data=rows)
 
-def pruneTree(tree, minGain, evaluationFunc=None, notify=True):
+def pruneTree(tree, minGain, evaluationFunc=None):
     """Prunes the obtained tree according to the minimal gain (entropy or gini )"""
     if (tree.trueBranch.results == None):
-        pruneTree(tree.trueBranch, minGain, evaluationFunc, notify)
+        pruneTree(tree.trueBranch, minGain, evaluationFunc)
     if (tree.falseBranch.results == None):
-        pruneTree(tree.falseBranch, minGain, evaluationFunc, notify)
+        pruneTree(tree.falseBranch, minGain, evaluationFunc)
     
     #merge leafNode
     if tree.trueBranch.results != None and tree.falseBranch.results != None:
@@ -119,8 +122,6 @@ def pruneTree(tree, minGain, evaluationFunc=None, notify=True):
         p = float(len(tB)) / len(tB + fB)
         delta = evaluationFunc(tB + fB) - p * evaluationFunc(tB) - (1 - p) * evaluationFunc(fB)
         if delta < minGain:
-            if notify:
-                print ('A branch was pruned : gain = %f' % delta)
             tree.trueBranch, tree.falseBranch = None, None
             tree.results = calculateDiffCount(tB + fB)
 
@@ -144,17 +145,18 @@ def classify(testSet, tree):
     return classify(testSet, branch)
 
 
-
-
 dataSet, labels = DP.createDataSet()
 maxminScalar(dataSet)
 
 Tree = buildDecisionTree(dataSet, evaluationFunc=entropy)
 
-pruneTree(Tree, 0.5, evaluationFunc=entropy, notify=True)
+pruneTree(Tree, 0.5, evaluationFunc=entropy)
 
 res = DP.plot(Tree)
 
+dot_data = DP.dotgraph(Tree)
+graph = pydotplus.graph_from_dot_data(dot_data)
+graph.write_png('fruit.png')
 print (res)
 
 print (dataSet[52][:-1])
