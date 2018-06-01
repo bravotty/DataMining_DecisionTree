@@ -157,7 +157,6 @@ res = DP.plot(Tree)
 
 dot_data = DP.dotgraph(Tree)
 graph = pydotplus.graph_from_dot_data(dot_data)
-graph.write_pdf("fruit.pdf")
 graph.write_png("fruit.png")
 print (res)
 
