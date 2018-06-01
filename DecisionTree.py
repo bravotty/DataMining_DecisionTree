@@ -3,9 +3,9 @@
 # Date   : 2018-5-25
 
 import numpy as np
-import pandas as pd
 from math import log
 from collections import defaultdict
+import DecisionPlot as DP
 
 class DecisionTree:
     def __init__(self, value=None, trueBranch=None, falseBranch=None, results=None, col=-1, summary=None, data=None):
@@ -16,17 +16,6 @@ class DecisionTree:
         self.col = col                   #Record the feature columns
         self.summary = summary           #Every node's summary info
         self.data = data                 #LeafNode data
-
-def createDataSet():
-    fruit = pd.read_table('./fruit.txt')
-    #convert pd.DataFrame -> ndarray -> list 
-    fruit.head()
-    #print fruit.shape
-    labels = ['mass', 'width', 'height', 'color_score', 'fruit_label']
-    train_data = fruit[labels]
-    numpy_train_data = np.array(train_data)
-    dataSet = numpy_train_data.tolist()
-    return dataSet, labels
 
 def maxminScalar(dataSet):
     for i in range(len(dataSet[0]) - 1):
@@ -156,15 +145,17 @@ def classify(testSet, tree):
 
 
 
-fruit = pd.read_table('./fruit.txt')
 
-
-
-dataSet, labels = createDataSet()
+dataSet, labels = DP.createDataSet()
 maxminScalar(dataSet)
+
 Tree = buildDecisionTree(dataSet, evaluationFunc=entropy)
 
 pruneTree(Tree, 0.5, evaluationFunc=entropy, notify=True)
+
+res = DP.plot(Tree)
+
+print (res)
 
 print (dataSet[52][:-1])
 
