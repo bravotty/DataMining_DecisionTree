@@ -6,7 +6,7 @@
 import numpy as np
 from math import log
 from collections import defaultdict
-import DecisionPlot as DP
+import plot2 as DP
 import pydotplus
 
 class DecisionTree:
