@@ -74,7 +74,7 @@ def dotgraph(tree):
 			DNode[split].append([split + 1, decisionT, parent, branch, dcSummary['impurity'], dcSummary['samples']])
 			return 
 	toString(0, tree, None)
-	DOT = ['displayTree {',
+	DOT = ['digraph Tree {',
 	'node [shape=box, style="filled, rounded", color = "black", fontname=helvetica] ;',
 	'edge [fontname=helvetica];']
 	initialNode = 0
