@@ -6,7 +6,7 @@
 # Windows      : 
 # Method1: pip install pydotplus + download graphviz
 #   	   GraphViz Download WebSite : https://graphviz.gitlab.io/_pages/Download/Download_windows.html
-# Method2: activate YOUR-ENV + conda install graphviz + pip install graphviz
+# Method2: activate SELF-ENV + conda install graphviz + pip install graphviz
 # Linux & Mac  : pip install pydotplus +  apt-get / brew install graphViz
 
 import numpy as np
@@ -20,100 +20,116 @@ def createDataSet():
     #print fruit.shape
     labelsDict = {}
     labels = ['mass', 'width', 'height', 'color_score', 'fruit_label']
+    #process the dataset to key : "Column 1:" value : "labels"
     for i in range(len(labels)):
         colKey = 'Column %d' % i
         labelsDict[colKey] = labels[i]
     train_data = fruit[labels]
     numpy_train_data = np.array(train_data)
     dataSet = numpy_train_data.tolist()
+    #list - dataSet
+
+    #
+
     return dataSet, labelsDict
 
 def plot(tree):
-	def toString(tree, indent=''):
-		if tree.results != None: #LeafNode
-			return str(tree.results)
-		else:
-			colKey = 'Column %s' % tree.col
-			if colKey in labels:
-				colKey = labels[colKey]
-			if isinstance(tree.value, int) or isinstance(tree.value, float):
-				decisionT = '%s >= %s?' % (colKey, tree.value)
-			else:
-				decisionT = '%s == %s?' % (colKey, tree.value)
-			tB = indent + 'True ->' + toString(tree.trueBranch, indent + '\t')
-			fB = indent + 'False->' + toString(tree.falseBranch, indent + '\t')
-			return (decisionT + '\n' + tB + '\n' + fB)
-
-	print(toString(tree))
+	#Nested
+    def toString(tree, indent=''):
+        if tree.results != None:  
+        # leaf
+            return str(tree.results)
+        else:
+            ColKey = 'Column %s' % tree.col
+            if ColKey in labels:
+                ColKey = labels[ColKey]
+            #for nums >=
+            if isinstance(tree.value, int) or isinstance(tree.value, float):
+                decision = '%s >= %s?' % (ColKey, tree.value)
+            else:
+            #for string ==
+                decision = '%s == %s?' % (ColKey, tree.value)
+            #true branch choice    
+            trueBranch = indent + 'yes -> ' + toString(tree.trueBranch, indent + '\t')
+            falseBranch = indent + 'no -> ' + toString(tree.falseBranch, indent + '\t')
+            return (decision + '\n' + trueBranch + '\n' + falseBranch)
+    print(toString(tree))
 
 def dotgraph(tree):
-	global labels
-	DNode = defaultdict(list)
+	#global defination of labels
+    global labels
+    dcNodes = defaultdict(list)
 
-	def toString(split, tree, branch, parent='null', indent=''):
-		if (tree.results != None):
-			temp = []
-			for i, j in tree.results.items():
-				temp.append('%s:%d' % (i, j))
-			dcY = {'name' : '%s' % ','.join(temp), 'parent':parent}
-			dcSummary = tree.summary
-			DNode[split].append(['leaf', dcY['name'], parent, branch, 
-				dcSummary['impurity'], dcSummary['samples']])
-			return dcY
-		else:
-			colKey = 'Column %s' % tree.col
-			if colKey in labels:
-				colKey = labels[colKey]
-			if isinstance(tree.value, int) or isinstance(tree.value, float):
-				decisionT = '%s >= %s' % (colKey, tree.value)
-			else:
-				decisionT = '%s == %s' % (colKey, tree.value)
-			tB = toString(split + 1, tree.trueBranch, True, decisionT, indent + '\t\t')
-			fB = toString(split + 1, tree.falseBranch, False, decisionT, indent + '\t\t')
-			dcSummary = tree.summary
-			DNode[split].append([split + 1, decisionT, parent, branch, dcSummary['impurity'], dcSummary['samples']])
-			return 
-	toString(0, tree, None)
-<<<<<<< HEAD
-	DOT = ['disgraph Tree {',
-=======
-	DOT = ['digraph Tree {',
->>>>>>> 3bf0cb1812f8a5f13149a0279364a7f154a05a8b
-	'node [shape=box, style="filled, rounded", color = "black", fontname=helvetica] ;',
-	'edge [fontname=helvetica];']
-	initialNode = 0
-	DCparent = {}
-	for i, j in DNode.items():
-		for m in j:
-			split, decisionT, parent, branch, impurity, samples = m
-			if type(split) == int:
-				ZZsplit = '%d-%s' % (split, decisionT)
-				DCparent[ZZsplit] = initialNode
-				DOT.append('%d [label=<%s<br/>impurity %s<br/>samples %s>, fillcolor="#e5813900"] ;' % \
-					(initialNode, decisionT.replace('>=', '&ge;').replace('?', ''),
-					impurity, samples))
+    def toString(split, tree, bBranch, szParent = "null", indent=''):
+        if tree.results != None:  # leaf node
+            lsY = []
+            for szX, n in tree.results.items():
+                    lsY.append('%s:%d' % (szX, n))
+            dcY = {"name": "%s" % ', '.join(lsY), "parent" : szParent}
+            dcSummary = tree.summary
+            #leafNode
+            dcNodes[split].append(['leaf', dcY['name'], szParent, bBranch, dcSummary['impurity'],
+                                    dcSummary['samples']])
+            return dcY
+        else:
+        	#for the node 
+            szCol = 'Column %s' % tree.col
+            if szCol in labels:
+                    szCol = labels[szCol]
+            if isinstance(tree.value, int) or isinstance(tree.value, float):
+                    decision = '%s >= %s' % (szCol, tree.value)
+            else:
+                    decision = '%s == %s' % (szCol, tree.value)
+            trueBranch = toString(split+1, tree.trueBranch, True, decision, indent + '\t')
+            falseBranch = toString(split+1, tree.falseBranch, False, decision, indent + '\t')
+            dcSummary = tree.summary
+            dcNodes[split].append([split+1, decision, szParent, bBranch, dcSummary['impurity'],
+                                    dcSummary['samples']])
+            return
+    #run
+    toString(0, tree, None)
+    #initial Graph list
+    DOT_graph = ['disgraph Tree {',
+                'node [shape=box, style="filled, rounded", color="black", fontname=helvetica] ;',
+                'edge [fontname=helvetica] ;'
+    ]
 
-			else:
-				DOT.append('%d [label=<impurity %s<br/>samples %s<br/>class %s>, fillcolor="#e5813900"] ;' % \
-					(initialNode, impurity, samples, decisionT))
-			if parent != 'null':
-				if branch:
-					Sangle = '45'
-					Slabel = 'True'
-				else:
-					Sangle = '-45'
-					Slabel = 'False'
-				ZZsplit = '%d-%s' % (i, parent)
-				pNode = DCparent[ZZsplit]
-				if i == 1:
-					DOT.append('%d -> %d [labeldistance=2.5, labelangle=%s, headlabel="%s"] ;' % (pNode,
-                            initialNode, Sangle, Slabel))
-				else:
-					DOT.append('%d -> %d ;' % (pNode, initialNode))
-			initialNode += 1
-	DOT.append('}')
-	dot_data = '\n'.join(DOT)
-	return dot_data
+    initialNode = 0
+    dcParent = {}
+    for nSplit, lsY in dcNodes.items():
+        for lsX in lsY:
+            split, decision, szParent, bBranch, szImpurity, szSamples =lsX
+            if type(split) == int:
+                szSplit = '%d-%s' % (split, decision)
+                dcParent[szSplit] = initialNode
+                DOT_graph.append('%d [label=<%s<br/>impurity %s<br/>samples %s>, fillcolor="#e5813900"] ;' % (initialNode,
+                                        decision.replace('>=', '&ge;').replace('?', ''),
+                                        szImpurity,
+                                        szSamples))
+            else:
+                DOT_graph.append('%d [label=<impurity %s<br/>samples %s<br/>class %s>, fillcolor="#e5813900"] ;' % (initialNode,
+                                        szImpurity,
+                                        szSamples,
+                                        decision))
+                
+            if szParent != 'null':
+                if bBranch:
+                    szAngle = '45'
+                    szHeadLabel = 'True'
+                else:
+                    szAngle = '-45'
+                    szHeadLabel = 'False'
+                szSplit = '%d-%s' % (nSplit, szParent)
+                p_node = dcParent[szSplit]
+                if nSplit == 1:
+                    DOT_graph.append('%d -> %d [labeldistance=2.5, labelangle=%s, headlabel="%s"] ;' % (p_node,
+                                                        initialNode, szAngle, szHeadLabel))
+                else:
+                    DOT_graph.append('%d -> %d ;' % (p_node, initialNode))
+            initialNode += 1
+    DOT_graph.append('}')
+    dot_data = '\n'.join(DOT_graph)
+    return dot_data
 
 dataSet, labels = createDataSet()
 
