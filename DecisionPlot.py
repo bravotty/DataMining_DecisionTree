@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 from collections import defaultdict
 
-def createDataSet():
+def createDataSet(splitSize=0.2):
     fruit = pd.read_table('./fruit.txt')
     #convert pd.DataFrame -> ndarray -> list 
     fruit.head()
@@ -24,14 +24,27 @@ def createDataSet():
     for i in range(len(labels)):
         colKey = 'Column %d' % i
         labelsDict[colKey] = labels[i]
-    train_data = fruit[labels]
-    numpy_train_data = np.array(train_data)
-    dataSet = numpy_train_data.tolist()
+    trainData = fruit[labels]
+    numpyTrainData = np.array(trainData)
+    # dataSet = numpy_train_data.tolist()
     #list - dataSet
+    recordNums = numpyTrainData.shape[0]
 
+    trainDataIndex = range(recordNums)
+    #train_data_index = [1, ..., 59]
+    testDataIndex = []
+    testNumber = int(recordNums * splitSize)
+    for i in range(testNumber):
+    	#choose test_number test e.g.s
+    	randomNum = int(np.random.uniform(0, len(trainDataIndex)))
+    	testDataIndex.append(trainDataIndex[randomNum])
+    	del trainDataIndex[randomNum]
+    trainSet = recordNums[trainDataIndex]
+    testSet  = recordNums[testDataIndex]
     #
-
-    return dataSet, labelsDict
+    trainSet = trainSet.tolist()
+    testSet  = testSet.tolist()
+    return trainSet, testSet, labelsDict
 
 def plot(tree):
 	#Nested
