@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 # Author : tyty
 # Date   : 2018-6-1
+
 import numpy as np
-from collections import defaultdict
 import pandas as pd
+from math import log
+from collections import defaultdict
 
 class DecisionTree:
     def __init__(self, value=None, trueBranch=None, falseBranch=None, results=None, col=-1, summary=None, data=None):
@@ -44,13 +46,21 @@ def calculateDiffCount(dataSet):
             results[data[-1]] += 1
     return results
 
+def entropy(rows):
+    results = calculateDiffCount(rows)
+    entroP = 0.0
+    for i in results:
+        p = float(results[i]) / len(rows)
+        entroP -= p * log(p, 2)
+    return entroP
+
 def gini(rows):
+    #cal the gini
     results = calculateDiffCount(rows)
     imp = 0.0
     for i in results:
         imp += float(results[i]) / len(rows) * float(results[i]) / len(rows)
     return 1 - imp
-
 
 def splitDataSet(rows, value, column):
     set1 = []
@@ -102,7 +112,7 @@ def buildDecisionTree(rows, evaluationFunc = gini):
     else:
         return DecisionTree(results=calculateDiffCount(rows), summary=dcY, data=rows)
 
-def pruneTree(tree, minGain, evaluationFunc=gini, notify=False):
+def pruneTree(tree, minGain, evaluationFunc=gini, notify=True):
     """Prunes the obtained tree according to the minimal gain (entropy or gini )"""
     if (tree.trueBranch.results == None):
         pruneTree(tree.trueBranch, minGain, evaluationFunc, notify)
@@ -122,16 +132,16 @@ def pruneTree(tree, minGain, evaluationFunc=gini, notify=False):
         delta = evaluationFunc(tB + fB) - p * evaluationFunc(tB) - (1 - p) * evaluationFunc(fB)
         if delta < minGain:
             if notify:
-                print 'A branch was pruned : gain = %f' % delta
+                print ('A branch was pruned : gain = %f' % delta)
             tree.trueBranch, tree.falseBranch = None, None
             tree.results = calculateDiffCount(tB + fB)
 
 
-def classify(observations, tree):
+def classify(testSet, tree):
     if tree.results != None: #LeafNode
         return tree.results
     else: 
-        v = observations[tree.col]
+        v = testSet[tree.col]
         branch = None
         if isinstance(v, float) or isinstance(v, int):
             if v >= tree.value: 
@@ -143,7 +153,7 @@ def classify(observations, tree):
                 branch = tree.trueBranch
             else:
                 branch = tree.falseBranch
-    return classify(observations, branch)
+    return classify(testSet, branch)
 
 
 
@@ -153,11 +163,14 @@ def classify(observations, tree):
 dataSet, labels = createDataSet()
 maxminScalar(dataSet)
 
+
+print (entropy(dataSet))
+
 Tree = buildDecisionTree(dataSet)
 
 pruneTree(Tree, 0.4, notify=True)
 
-print dataSet[52][:-1]
+print (dataSet[52][:-1])
 
 print (classify(dataSet[53][:-1], Tree))
 
