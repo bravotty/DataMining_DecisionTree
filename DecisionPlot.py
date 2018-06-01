@@ -11,6 +11,7 @@
 
 import numpy as np
 import pandas as pd
+from collections import defaultdict
 
 def createDataSet():
     fruit = pd.read_table('./fruit.txt')
@@ -48,14 +49,15 @@ def plot(tree):
 def dotgraph(tree):
 	global labels
 	DNode = defaultdict(list)
+
 	def toString(split, tree, branch, parent='null', indent=''):
 		if (tree.results != None):
 			temp = []
 			for i, j in tree.results.items():
 				temp.append('%s:%d' % (i, j))
-			dcY = {'name' : '%s' % ','.join(i), 'parent':parent}
-			dcSummary = tree.summary()
-			Dnode[split].append(['leaf', dcY['name'], parent, branch, \
+			dcY = {'name' : '%s' % ','.join(temp), 'parent':parent}
+			dcSummary = tree.summary
+			DNode[split].append(['leaf', dcY['name'], parent, branch, 
 				dcSummary['impurity'], dcSummary['samples']])
 			return dcY
 		else:
@@ -69,15 +71,15 @@ def dotgraph(tree):
 			tB = toString(split + 1, tree.trueBranch, True, decisionT, indent + '\t\t')
 			fB = toString(split + 1, tree.falseBranch, False, decisionT, indent + '\t\t')
 			dcSummary = tree.summary
-			Dnode[split].append([split + 1, decisionT, parent, branch, dcSummary['impurity'], dcSummary['samples']])
+			DNode[split].append([split + 1, decisionT, parent, branch, dcSummary['impurity'], dcSummary['samples']])
 			return 
 	toString(0, tree, None)
-	DOT = ['displayTree <',
+	DOT = ['displayTree {',
 	'node [shape=box, style="filled, rounded", color = "black", fontname=helvetica] ;',
 	'edge [fontname=helvetica];']
 	initialNode = 0
 	DCparent = {}
-	for i, j in Dnode.items():
+	for i, j in DNode.items():
 		for m in j:
 			split, decisionT, parent, branch, impurity, samples = m
 			if type(split) == int:
@@ -97,7 +99,7 @@ def dotgraph(tree):
 				else:
 					Sangle = '-45'
 					Slabel = 'False'
-				ZZsplit = '%d - %s' % (i, parent)
+				ZZsplit = '%d-%s' % (i, parent)
 				pNode = DCparent[ZZsplit]
 				if i == 1:
 					DOT.append('%d -> %d [labeldistance=2.5, labelangle=%s, headlabel="%s"] ;' % (pNode,
@@ -105,7 +107,7 @@ def dotgraph(tree):
 				else:
 					DOT.append('%d -> %d ;' % (pNode, initialNode))
 			initialNode += 1
-	DOT.append('>')
+	DOT.append('}')
 	dot_data = '\n'.join(DOT)
 	return dot_data
 

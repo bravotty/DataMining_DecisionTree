@@ -7,6 +7,7 @@ import numpy as np
 from math import log
 from collections import defaultdict
 import DecisionPlot as DP
+import pydotplus
 
 class DecisionTree:
     def __init__(self, value=None, trueBranch=None, falseBranch=None, results=None, col=-1, summary=None, data=None):
@@ -156,7 +157,8 @@ res = DP.plot(Tree)
 
 dot_data = DP.dotgraph(Tree)
 graph = pydotplus.graph_from_dot_data(dot_data)
-graph.write_png('fruit.png')
+graph.write_pdf("fruit.pdf")
+graph.write_png("fruit.png")
 print (res)
 
 print (dataSet[52][:-1])
