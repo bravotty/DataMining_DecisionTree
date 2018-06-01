@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Author : tyty
-# Date   : 2018-6-1
+# Date   : 2018-5-25
 
 import numpy as np
 import pandas as pd
@@ -19,6 +19,7 @@ class DecisionTree:
 
 def createDataSet():
     fruit = pd.read_table('./fruit.txt')
+    #convert pd.DataFrame -> ndarray -> list 
     fruit.head()
     #print fruit.shape
     labels = ['mass', 'width', 'height', 'color_score', 'fruit_label']
@@ -81,7 +82,7 @@ def splitDataSet(rows, value, column):
                 set2.append(row)
     return set1, set2
 
-def buildDecisionTree(rows, evaluationFunc = gini):
+def buildDecisionTree(rows, evaluationFunc = None):
     currentGain = evaluationFunc(rows)
     rows_length = len(rows)
     #print rows_length
@@ -112,7 +113,7 @@ def buildDecisionTree(rows, evaluationFunc = gini):
     else:
         return DecisionTree(results=calculateDiffCount(rows), summary=dcY, data=rows)
 
-def pruneTree(tree, minGain, evaluationFunc=gini, notify=True):
+def pruneTree(tree, minGain, evaluationFunc=None, notify=True):
     """Prunes the obtained tree according to the minimal gain (entropy or gini )"""
     if (tree.trueBranch.results == None):
         pruneTree(tree.trueBranch, minGain, evaluationFunc, notify)
@@ -123,10 +124,8 @@ def pruneTree(tree, minGain, evaluationFunc=gini, notify=True):
     if tree.trueBranch.results != None and tree.falseBranch.results != None:
         tB, fB = [], []
         for i, j in tree.trueBranch.results.items():
-
             tB = [[i]] * j
         for i, j in tree.falseBranch.results.items():
-
             fB = [[i]] * j
         p = float(len(tB)) / len(tB + fB)
         delta = evaluationFunc(tB + fB) - p * evaluationFunc(tB) - (1 - p) * evaluationFunc(fB)
@@ -157,18 +156,15 @@ def classify(testSet, tree):
 
 
 
+fruit = pd.read_table('./fruit.txt')
 
 
 
 dataSet, labels = createDataSet()
 maxminScalar(dataSet)
+Tree = buildDecisionTree(dataSet, evaluationFunc=entropy)
 
-
-print (entropy(dataSet))
-
-Tree = buildDecisionTree(dataSet)
-
-pruneTree(Tree, 0.4, notify=True)
+pruneTree(Tree, 0.5, evaluationFunc=entropy, notify=True)
 
 print (dataSet[52][:-1])
 
