@@ -3,6 +3,7 @@
 # Date   : 2018-5-25
 # Env    : python2.6
 
+from __future__ import division
 import numpy as np
 from math import log
 from collections import defaultdict
@@ -146,38 +147,36 @@ def classify(testSet, tree):
     return classify(testSet, branch)
 
 
-dataSet, labels, testSet, testLabels = DP.createDataSet()
-maxminScalar(dataSet)
+trainSet, labels, testSet, testLabels = DP.createDataSet()
+maxminScalar(trainSet)
 maxminScalar(testSet)
-<<<<<<< HEAD
 
-Tree = buildDecisionTree(dataSet, evaluationFunc=gini)
+Tree = buildDecisionTree(trainSet, evaluationFunc=gini)
 
-pruneTree(Tree, 0.2, evaluationFunc=gini)
-=======
-Tree = buildDecisionTree(dataSet, evaluationFunc=entropy)
-
-pruneTree(Tree, 0.2, evaluationFunc=entropy)
->>>>>>> c114d6897f127e4a12a8669a2ea7f53c0449fa50
+pruneTree(Tree, 0.4, evaluationFunc=gini)
 
 res = DP.plot(Tree)
 
 dot_data = DP.dotgraph(Tree)
 graph = pydotplus.graph_from_dot_data(dot_data)
 graph.write_png("fruit.png")
-<<<<<<< HEAD
 
-print dataSet
-
-print testSet
-DP.processTestSet(testSet)
 #test Step
+cnt = 0
+
 for i in range(len(testSet)):
-=======
->>>>>>> c114d6897f127e4a12a8669a2ea7f53c0449fa50
+    res = classify(testSet[i], Tree)
+    # print testSet[i]
+    print res.keys()[0]
+    if (res.keys()[0] == testLabels[i]):
+        cnt += 1
+print cnt
+print len(testSet)
+print cnt / len(testSet)
 
-# print (dataSet[52][:-1])
 
-# print (classify(dataSet[53][:-1], Tree))
+# print (trainSet[52][:-1])
+
+# print (classify(trainSet[53][:-1], Tree))
 
 

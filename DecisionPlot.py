@@ -9,6 +9,7 @@
 # Method2: activate SELF-ENV + conda install graphviz + pip install graphviz
 # Linux & Mac  : pip install pydotplus +  apt-get / brew install graphViz
 
+from __future__ import division
 import numpy as np
 import pandas as pd
 from collections import defaultdict
@@ -45,15 +46,9 @@ def createDataSet(splitSize=0.2):
 
     testlabel = [a[-1] for a in testSet]
     testSet   = [a[:-1] for a in testSet]
+    print testSet
+    print testlabel
     return trainSet, labelsDict, testSet, testlabel
-
-def processTestSet(testSet):
-    temp = [a[:-1] for a in testSet]
-    print 'baibai !'
-    print temp
-
-
-    return testSet
 
 
 def plot(tree):
