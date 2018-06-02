@@ -42,7 +42,10 @@ def createDataSet(splitSize=0.2):
     testSet  = numpyTrainData[testDataIndex]
     trainSet = trainSet.tolist()
     testSet  = testSet.tolist()
-    return trainSet, testSet, labelsDict
+
+    testlabel = [a[-1] for a in testSet]
+    testSet   = [a[:-1] for a in testSet]
+    return trainSet, labelsDict, testSet, testlabel
 
 def processTestSet(testSet):
     temp = [a[:-1] for a in testSet]
@@ -151,13 +154,7 @@ def dotgraph(tree):
     dot_data = '\n'.join(DOT_graph)
     return dot_data
 
-trainSet, testSet, labels = createDataSet()
-
-
-
-
-
-
+trainSet, labels, testSet, testlabels = createDataSet()
 
 
 

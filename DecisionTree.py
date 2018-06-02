@@ -146,19 +146,26 @@ def classify(testSet, tree):
     return classify(testSet, branch)
 
 
-dataSet, testSet, labels = DP.createDataSet()
+dataSet, labels, testSet, testLabels = DP.createDataSet()
 maxminScalar(dataSet)
 maxminScalar(testSet)
+<<<<<<< HEAD
 
 Tree = buildDecisionTree(dataSet, evaluationFunc=gini)
 
 pruneTree(Tree, 0.2, evaluationFunc=gini)
+=======
+Tree = buildDecisionTree(dataSet, evaluationFunc=entropy)
+
+pruneTree(Tree, 0.2, evaluationFunc=entropy)
+>>>>>>> c114d6897f127e4a12a8669a2ea7f53c0449fa50
 
 res = DP.plot(Tree)
 
 dot_data = DP.dotgraph(Tree)
 graph = pydotplus.graph_from_dot_data(dot_data)
 graph.write_png("fruit.png")
+<<<<<<< HEAD
 
 print dataSet
 
@@ -166,6 +173,8 @@ print testSet
 DP.processTestSet(testSet)
 #test Step
 for i in range(len(testSet)):
+=======
+>>>>>>> c114d6897f127e4a12a8669a2ea7f53c0449fa50
 
 # print (dataSet[52][:-1])
 
