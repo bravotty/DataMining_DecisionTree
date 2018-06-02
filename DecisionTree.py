@@ -146,19 +146,18 @@ def classify(testSet, tree):
     return classify(testSet, branch)
 
 
-dataSet, testSet, labels = DP.createDataSet()
+dataSet, labels, testSet, testLabels = DP.createDataSet()
 maxminScalar(dataSet)
-
+maxminScalar(testSet)
 Tree = buildDecisionTree(dataSet, evaluationFunc=entropy)
 
-pruneTree(Tree, 0.5, evaluationFunc=entropy)
+pruneTree(Tree, 0.2, evaluationFunc=entropy)
 
 res = DP.plot(Tree)
 
 dot_data = DP.dotgraph(Tree)
 graph = pydotplus.graph_from_dot_data(dot_data)
 graph.write_png("fruit.png")
-print (res)
 
 # print (dataSet[52][:-1])
 
