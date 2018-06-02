@@ -44,6 +44,15 @@ def createDataSet(splitSize=0.2):
     testSet  = testSet.tolist()
     return trainSet, testSet, labelsDict
 
+def processTestSet(testSet):
+    temp = [a[:-1] for a in testSet]
+    print 'baibai !'
+    print temp
+
+
+    return testSet
+
+
 def plot(tree):
 	#Nested
     def toString(tree, indent=''):
