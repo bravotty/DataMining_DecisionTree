@@ -29,7 +29,6 @@ def createDataSet(splitSize=0.2):
     # dataSet = numpy_train_data.tolist()
     #list - dataSet
     recordNums = numpyTrainData.shape[0]
-
     trainDataIndex = range(recordNums)
     #train_data_index = [1, ..., 59]
     testDataIndex = []
@@ -39,9 +38,8 @@ def createDataSet(splitSize=0.2):
     	randomNum = int(np.random.uniform(0, len(trainDataIndex)))
     	testDataIndex.append(trainDataIndex[randomNum])
     	del trainDataIndex[randomNum]
-    trainSet = recordNums[trainDataIndex]
-    testSet  = recordNums[testDataIndex]
-    #
+    trainSet = numpyTrainData[trainDataIndex]
+    testSet  = numpyTrainData[testDataIndex]
     trainSet = trainSet.tolist()
     testSet  = testSet.tolist()
     return trainSet, testSet, labelsDict
@@ -63,8 +61,8 @@ def plot(tree):
             #for string ==
                 decision = '%s == %s?' % (ColKey, tree.value)
             #true branch choice    
-            trueBranch = indent + 'yes -> ' + toString(tree.trueBranch, indent + '\t')
-            falseBranch = indent + 'no -> ' + toString(tree.falseBranch, indent + '\t')
+            trueBranch = indent + 'yes -> ' + toString(tree.trueBranch, indent + '\t\t')
+            falseBranch = indent + 'no -> ' + toString(tree.falseBranch, indent + '\t\t')
             return (decision + '\n' + trueBranch + '\n' + falseBranch)
     print(toString(tree))
 
@@ -102,7 +100,7 @@ def dotgraph(tree):
     #run
     toString(0, tree, None)
     #initial Graph list
-    DOT_graph = ['disgraph Tree {',
+    DOT_graph = ['digraph Tree {',
                 'node [shape=box, style="filled, rounded", color="black", fontname=helvetica] ;',
                 'edge [fontname=helvetica] ;'
     ]
@@ -144,7 +142,7 @@ def dotgraph(tree):
     dot_data = '\n'.join(DOT_graph)
     return dot_data
 
-dataSet, labels = createDataSet()
+trainSet, testSet, labels = createDataSet()
 
 
 

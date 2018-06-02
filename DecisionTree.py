@@ -6,7 +6,7 @@
 import numpy as np
 from math import log
 from collections import defaultdict
-import plot2 as DP
+import DecisionPlot as DP
 import pydotplus
 
 class DecisionTree:
@@ -146,7 +146,7 @@ def classify(testSet, tree):
     return classify(testSet, branch)
 
 
-dataSet, labels = DP.createDataSet()
+dataSet, testSet, labels = DP.createDataSet()
 maxminScalar(dataSet)
 
 Tree = buildDecisionTree(dataSet, evaluationFunc=entropy)
@@ -160,8 +160,8 @@ graph = pydotplus.graph_from_dot_data(dot_data)
 graph.write_png("fruit.png")
 print (res)
 
-print (dataSet[52][:-1])
+# print (dataSet[52][:-1])
 
-print (classify(dataSet[53][:-1], Tree))
+# print (classify(dataSet[53][:-1], Tree))
 
 
