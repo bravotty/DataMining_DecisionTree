@@ -9,10 +9,8 @@
 [license]: https://github.com/bravotty/DataMining_DecisionTree/blob/master/LICENSE
 
 A python implementation of Decision Tree
+Env       : Python 2.6
 
-## Env       : Python 2.6
-## Author    : tyty
-## Visualize : GraphViz
 ## Usage     : 
 
 Windows     : 
@@ -27,10 +25,16 @@ Mac & Linux :
 	1.pip install numpy, pydotplus, pandas
 	Linux 2.sudo apt-get install graphviz
 	Mac   2.brew install graphviz
-
+```
+Run .py
+```lisp
+    python DecisionTree
 ```
 
-##Class DecisionTree
+
+## Defination :
+
+DecisionTree Node
 ```lisp
 class DecisionTree:
     def __init__(self, value=None, trueBranch=None, falseBranch=None, results=None, col=-1, summary=None, data=None):
@@ -43,3 +47,14 @@ class DecisionTree:
         self.data = data                 #LeafNode data
 ```
 
+
+## Code Flie  :
+tools.py 
+--
+DecisionTree.py
+DecisionPlot.py
+
+
+## License
+
+[The MIT License](https://github.com/bravotty/DataMining_DecisionTree/blob/master/LICENSE)
