@@ -152,5 +152,3 @@ def dotgraph(tree):
 trainSet, labels, testSet, testlabels = createDataSet()
 
 
-
-
