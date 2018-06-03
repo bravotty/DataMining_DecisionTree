@@ -50,7 +50,8 @@ class DecisionTree:
 
 ## Code Flie  :
 tools.py 
---
+	|--Evaluation Function
+	|--
 DecisionTree.py
 DecisionPlot.py
 
