@@ -2,12 +2,6 @@
 # Author : tyty
 # Date   : 2018-6-1
 # Env    : python2.6
-# Based on GraphViz : http://www.graphviz.org/
-# Windows      : 
-# Method1: pip install pydotplus + download graphviz
-#   	   GraphViz Download WebSite : https://graphviz.gitlab.io/_pages/Download/Download_windows.html
-# Method2: activate SELF-ENV + conda install graphviz + pip install graphviz
-# Linux & Mac  : pip install pydotplus +  apt-get / brew install graphViz
 
 from __future__ import division
 import numpy as np
