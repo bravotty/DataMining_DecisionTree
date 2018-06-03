@@ -8,7 +8,10 @@
 [licensesvg]: https://img.shields.io/badge/License-MIT-blue.svg
 [license]: https://github.com/bravotty/DataMining_DecisionTree/blob/master/LICENSE
 
-CART Decision Tree
+An implementation of Decision Tree
 
-EvaluationFunction = GINI
+# Env       : Python 2.6
+# Author    : tyty
+# Visualize : GraphViz
+
 
