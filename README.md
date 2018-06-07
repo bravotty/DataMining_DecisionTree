@@ -51,10 +51,17 @@ class DecisionTree:
 ## Code Flie  :
 ```lisp
 tools.py 
-	|--Evaluation Function
-	|--
+  |--Evaluation Function
+  |--MaxMin scalar Function
+  |--Accuracy Function
+  |--Classify Function
+  |--CreateDataSet Funtion
 DecisionTree.py
+  |--
 DecisionPlot.py
+  |--
+
+  
 ```
 
 ## License
