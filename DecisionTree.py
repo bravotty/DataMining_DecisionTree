@@ -94,12 +94,12 @@ tl.maxminScalar(trainSet)
 tl.maxminScalar(testSet)
 
 Tree = buildDecisionTree(trainSet, evaluationFunc=tl.gini)
-pruneTree(Tree, 0.4, evaluationFunc=tl.gini)
+pruneTree(Tree, 0.2, evaluationFunc=tl.gini)
 
-#res = DP.plot(Tree)
-#dot_data = DP.dotgraph(Tree)
-#graph = pydotplus.graph_from_dot_data(dot_data)
-#graph.write_png("fruit.png")
+res = DP.plot(Tree)
+dot_data = DP.dotgraph(Tree)
+graph = pydotplus.graph_from_dot_data(dot_data)
+graph.write_png("fruit.png")
 
 #test Step
 accu = tl.accuracy(testSet, testLabels, Tree)
