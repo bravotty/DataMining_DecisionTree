@@ -40,8 +40,8 @@ def createDataSet(splitSize=0.2):
 
     testlabel = [a[-1] for a in testSet]
     testSet   = [a[:-1] for a in testSet]
-    print testSet
-    print testlabel
+    #print testSet
+    #print testlabel
     return trainSet, labelsDict, testSet, testlabel
 
 
@@ -73,7 +73,8 @@ def dotgraph(tree):
     dcNodes = defaultdict(list)
 
     def toString(split, tree, bBranch, szParent = "null", indent=''):
-        if tree.results != None:  # leaf node
+        if tree.results != None:  
+        # leaf node
             lsY = []
             for szX, n in tree.results.items():
                     lsY.append('%s:%d' % (szX, n))
