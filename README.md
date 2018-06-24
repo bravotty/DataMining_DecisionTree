@@ -15,20 +15,20 @@ Env       : Python 2.6
 
 Windows     : 
 ```lisp
-	1. Anaconda command  : activate "python2.x env"
-	2.                     pip/conda install numpy, pydotplus, pandas
-	3. Download GraphViz : https://graphviz.gitlab.io/_pages/Download/Download_windows.html
-	4.                     add the GraphViz to your PATH env
+1. Anaconda command  : activate "python2.x env"
+2.                     pip/conda install numpy, pydotplus, pandas
+3. Download GraphViz : https://graphviz.gitlab.io/_pages/Download/Download_windows.html
+4.                     add the GraphViz to your PATH env
 ```
 Mac & Linux :
 ```lisp
-	1.pip install numpy, pydotplus, pandas
-	Linux 2.sudo apt-get install graphviz
-	Mac   2.brew install graphviz
+1.pip install numpy, pydotplus, pandas
+Linux 2.sudo apt-get install graphviz
+Mac   2.brew install graphviz
 ```
 Run .py
 ```lisp
-    python DecisionTree
+python DecisionTree
 ```
 
 

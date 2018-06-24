@@ -9,7 +9,7 @@ import tools as tl
 import pydotplus
 import cv2
 
-class DecisionTree:
+class DecisionTree(object):
     def __init__(self, value=None, trueBranch=None, falseBranch=None, results=None, col=-1, summary=None):
         self.value = value               #Record the value in TreeNode
         self.trueBranch = trueBranch     #True  branch in TreeNode
@@ -56,35 +56,38 @@ def buildDecisionTree(dataSet, evaluationFunc = None):
             summary=dcY)
 
 
+def DecisionTreeModelMain():
+    #根据fruit.txt抽取训练集、测试集、训练集标签、测试集标签
+    trainSet, labels, testSet, testLabels = DP.createDataSet()
+    #最大最小规约
+    #tl.maxminScalar(trainSet)
+    #tl.maxminScalar(testSet)
 
-#根据fruit.txt抽取训练集、测试集、训练集标签、测试集标签
-trainSet, labels, testSet, testLabels = DP.createDataSet()
-#最大最小规约
-tl.maxminScalar(trainSet)
-tl.maxminScalar(testSet)
+    #以Gini函数建树并剪枝
+    Tree = buildDecisionTree(trainSet, evaluationFunc=tl.gini)
+    tl.pruneTree(Tree, 0.3, evaluationFunc=tl.gini)
 
-#以Gini函数建树并剪枝
-Tree = buildDecisionTree(trainSet, evaluationFunc=tl.gini)
-tl.pruneTree(Tree, 0.3, evaluationFunc=tl.gini)
+    #绘制决策树图像，并保存为fruit.png
+    res = DP.plot(Tree)
+    dot_data = DP.dotgraph(Tree)
+    graph = pydotplus.graph_from_dot_data(dot_data)
+    graph.write_png("fruit.png")
 
-#绘制决策树图像，并保存为fruit.png
-res = DP.plot(Tree)
-dot_data = DP.dotgraph(Tree)
-graph = pydotplus.graph_from_dot_data(dot_data)
-graph.write_png("fruit.png")
+    #读取fruit.png
+    #显示fruit.png,设置窗口时间为5秒自动关闭
+    fruitPng = cv2.imread("./fruit.png")
+    cv2.imshow('fruitPng.jpg', fruitPng)
+    cv2.waitKey(5000)
 
-#读取fruit.png
-#显示fruit.png,设置窗口时间为5秒自动关闭
-fruitPng = cv2.imread("./fruit.png")
-#cv2.imshow('fruitPng.jpg', fruitPng)
-#cv2.waitKey(5000)
+    #测试 Step
+    accu = tl.accuracy(testSet, testLabels, Tree)
+    rec  = tl.recall(testSet, testLabels, Tree, len(trainSet) + len(testSet))
+    F    = tl.fValue(testSet, testLabels, Tree, len(trainSet) + len(testSet))
+    #print the acc, rec and F
+    print 'DecisionTree Accuracy : ' + str(accu)
+    print 'DecisionTree Recall   : ' + str(rec)
+    print 'DecisionTree F-value  : ' + str(F)
 
-#测试 Step
-accu = tl.accuracy(testSet, testLabels, Tree)
-rec  = tl.recall(testSet, testLabels, Tree, len(trainSet) + len(testSet))
-F    = tl.fValue(testSet, testLabels, Tree, len(trainSet) + len(testSet))
-#print the acc, rec and F
-print 'DecisionTree Accuracy : ' + str(accu)
-print 'DecisionTree Recall   : ' + str(rec)
-print 'DecisionTree F-value  : ' + str(F)
-
+if __name__ == '__main__':
+    #main func start
+    DecisionTreeModelMain()
