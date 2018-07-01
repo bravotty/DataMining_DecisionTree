@@ -67,17 +67,23 @@ def DecisionTreeModelMain():
     Tree = buildDecisionTree(trainSet, evaluationFunc=tl.gini)
     tl.pruneTree(Tree, 0.3, evaluationFunc=tl.gini)
 
+
     #绘制决策树图像，并保存为fruit.png
     res = DP.plot(Tree)
     dot_data = DP.dotgraph(Tree)
     graph = pydotplus.graph_from_dot_data(dot_data)
+    #报错提示没有graphViz模块，可以选择./DecisionTreeResultPng/中png图像进行显示
+    if graph == None or dot_data == None :
+        fruitPngBackup = cv2.imread("./DecisionTreeResultPng/fruit7.png")
+        cv2.imshow("fruitPngBackup.png", fruitPngBackup)
+        cv2.waitKey(4000)
     graph.write_png("fruit.png")
 
     #读取fruit.png
     #显示fruit.png,设置窗口时间为5秒自动关闭
     fruitPng = cv2.imread("./fruit.png")
-    cv2.imshow('fruitPng.jpg', fruitPng)
-    cv2.waitKey(5000)
+    cv2.imshow('fruitPng.png', fruitPng)
+    cv2.waitKey(4000)
 
     #测试 Step
     accu = tl.accuracy(testSet, testLabels, Tree)
