@@ -30,7 +30,7 @@ Mac   2.brew install graphviz
 ```
 Run .py
 ```lisp
-python DecisionTree
+python DecisionTree.py
 ```
 
 ## Defination :
