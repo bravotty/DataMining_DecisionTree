@@ -51,10 +51,10 @@ class DecisionTree(object):
 ```lisp
 tools.py 
   |--Evaluation Function
-  |--/* MaxMin scalar Function */ hidden knife
+  |--/* MaxMin scalar Function */ hidden 
   |--Accuracy Function
   |--Classify Function
-  |--CreateDataSet Funtion
+  |--CreateDataSet Function
 
 DecisionTree.py
   |--buildDecisionTree Function
