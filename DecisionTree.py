@@ -4,7 +4,7 @@
 # Env    : python2.6
 
 from __future__ import division
-import DecisionPlot as DP
+import DecisionPlot as dp
 import tools as tl
 import pydotplus
 import cv2
@@ -44,8 +44,8 @@ def buildDecisionTree(dataSet, evaluationFunc = None):
     dcY = {'impurity' : '%.2f' %currentGain, 'samples': '%d' % dataSet_length}
     #stop or not stop
     if best_gain > 0:
-        #set[0] : feature col
-        #set[1] : 
+        #set[0] .. [1] : feature col
+
         trueBranch = buildDecisionTree(best_set[0], evaluationFunc)
         falseBranch = buildDecisionTree(best_set[1], evaluationFunc)
         return DecisionTree(col=best_value[0], value=best_value[1], \
@@ -58,7 +58,7 @@ def buildDecisionTree(dataSet, evaluationFunc = None):
 
 def DecisionTreeModelMain():
     #根据fruit.txt抽取训练集、测试集、训练集标签、测试集标签
-    trainSet, labels, testSet, testLabels = DP.createDataSet()
+    trainSet, labels, testSet, testLabels = dp.createDataSet()
     #最大最小规约
     #tl.maxminScalar(trainSet)
     #tl.maxminScalar(testSet)
@@ -69,8 +69,8 @@ def DecisionTreeModelMain():
 
 
     #绘制决策树图像，并保存为fruit.png
-    res = DP.plot(Tree)
-    dot_data = DP.dotgraph(Tree)
+    res = dp.plot(Tree)
+    dot_data = dp.dotgraph(Tree)
     graph = pydotplus.graph_from_dot_data(dot_data)
     #报错提示没有graphViz模块，可以选择./DecisionTreeResultPng/中png图像进行显示
     if graph == None or dot_data == None :

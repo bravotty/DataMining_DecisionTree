@@ -37,7 +37,6 @@ def createDataSet(splitSize=0.2):
     testSet  = numpyTrainData[testDataIndex]
     trainSet = trainSet.tolist()
     testSet  = testSet.tolist()
-
     testlabel = [a[-1] for a in testSet]
     testSet   = [a[:-1] for a in testSet]
     #print testSet
