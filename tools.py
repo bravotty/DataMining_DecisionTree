@@ -132,6 +132,7 @@ def recall(testSet, testLabels, tree, dataSetlength=59):
             cnt += 1
     rec = cnt / dataSetlength
     return rec
+    
 #计算F值函数
 def fValue(testSet, testLabels, tree, dataSetLength=59):
     accu = accuracy(testSet, testLabels, tree)

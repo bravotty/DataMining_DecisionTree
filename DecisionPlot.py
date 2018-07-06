@@ -143,6 +143,5 @@ def dotgraph(tree):
     dot_data = '\n'.join(DOT_graph)
     return dot_data
 
-trainSet, labels, testSet, testlabels = createDataSet()
 
 
