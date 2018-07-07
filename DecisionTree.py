@@ -89,6 +89,7 @@ def DecisionTreeModelMain():
     accu = tl.accuracy(testSet, testLabels, Tree)
     rec  = tl.recall(testSet, testLabels, Tree, len(trainSet) + len(testSet))
     F    = tl.fValue(testSet, testLabels, Tree, len(trainSet) + len(testSet))
+    
     #print the acc, rec and F
     print 'DecisionTree Accuracy : ' + str(accu)
     print 'DecisionTree Recall   : ' + str(rec)
